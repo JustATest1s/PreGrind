@@ -1,1 +1,915 @@
-<h1>Contact efefaefawfefawf@gmail.com With A 5 Pound Amazon Gift Card Code Then Email The Thing Your Trying To Buy With The Code!</h1>
+<h1>new modLoader.MOD({name: "Voxiom Hacked Client LEAKED", version: "1.0.0_alpha3", author: "ExplodIng_Andrey"}, function(){
+//VHC designed by ExplodIng_Andrey
+
+//dispose of old client (if any)
+if(client) {
+  client.dispose();
+};
+
+var client = {
+  Hacks: [],
+  version: "1.0.0_alpha2",
+  keyBinds: {},
+  inGame: true,
+};
+client.Hack = class {
+  constructor(enable, mainLoop, disable, name, description, key, delay){
+    this.enable = function(){try {enable(this_);}catch(e){}; this.isEnabled = true};
+    this.mainLoop = mainLoop;
+    this.disable = function(){try {disable(this_);}catch(e){}; this.isEnabled = false};
+    this.name = name;
+    this.description = description;
+    this.isEnabled = false;
+    this.key = key;
+    client.keyBinds[this.key] = this.name;
+    var this_ = this;
+    if(!delay){
+      delay = 10;
+    };
+    function loop(){
+      if(this_.isEnabled && client){
+        this_.mainLoop(this_);
+      };
+      setTimeout(loop, delay);
+    };
+    setTimeout(loop, 100);
+    client.Hacks.push(this);
+  };
+};
+client.MenuElement = class {
+  constructor(Hacks, title, left, top){
+    var menuElement = document.createElement("div");
+    menuElement.style = "left:"+left+"; color: rgba(0, 0, 0, 1) !important; top:"+top+"; margin: 25px; text-align: center; background: rgba(114, 154, 232, 1) !important; font-family: inherit; width:20%; height: 60%; position: absolute; border: solid black 4px";
+    menuElement.id = title;
+    menuElement.innerHTML = "<div style='border-bottom: solid black 4px; height: 2.5%; padding: 5%; background-color: rgba(149, 180, 240, 1); font-size: 200%' id="+title+"header >"+title+"</div>";
+    client.menuElement.appendChild(menuElement);
+    for(let i = 0; i < Hacks.length; i++) {
+      var part = document.createElement("div");
+      part.style = 'border-bottom: solid black 4px; font-size: 200%';
+      part.id = Hacks[i].name;
+      part.innerHTML = Hacks[i].name;
+      document.getElementById(title).appendChild(part);
+      document.getElementById(Hacks[i].name).addEventListener("mousedown", function (event){
+        if(/*!pc.controls || */!client.inGame) {client.error("You must be in a game to enable hacks!"); return};
+        if(!Hacks[i].isEnabled){
+          Hacks[i].enable();
+          document.getElementById(Hacks[i].name).style.backgroundColor = "white";
+        } else {
+          Hacks[i].disable();
+          document.getElementById(Hacks[i].name).style.backgroundColor = "rgba(114, 154, 232, 1)";
+        };
+      });
+      document.getElementById(Hacks[i].name).addEventListener("mouseover", function (event){
+          document.getElementById(Hacks[i].name).innerHTML = Hacks[i].description;
+      });
+      document.getElementById(Hacks[i].name).addEventListener("mouseleave", function (event){
+          document.getElementById(Hacks[i].name).innerHTML = Hacks[i].name;
+      });
+    };
+  };
+};
+
+client.menuToggled = 0;
+client.menuElement = document.createElement("div");
+document.body.appendChild(client.menuElement);
+client.menuElement.id = "vhc-menu";
+client.menuElement.style.width = "100%";
+client.menuElement.style.height = "100%";
+client.menuElement.style.background = "rgba(0, 0, 0, 0.5)";
+client.menuElement.style.position = "absolute";
+client.menuElement.style.zIndex = 100;
+//
+client.menuElement.style.top = 0;
+
+client.hackList = document.createElement("h1");
+document.body.appendChild(client.hackList);
+client.hackList.style.color = "#fff";
+client.hackList.style.position = "fixed";
+client.hackList.style.top = "40%";
+client.hackList.innerHTML = "VHC version "+client.version+"<br>";
+client.menuElement.style.zIndex = 100;
+
+client.keyBindElement = document.createElement("h1");
+document.body.appendChild(client.keyBindElement);
+client.keyBindElement.style.color = "#fff";
+client.keyBindElement.style.position = "fixed";
+client.keyBindElement.style.top = "40%";
+client.keyBindElement.style.fontSize = "132%";
+client.keyBindElement.style.left = "80%";
+client.keyBindElement.innerHTML = "Keybinds:<br>z - open menu<br><br>";
+client.menuElement.style.zIndex = 100;
+
+client.errorElement = document.createElement("h1");
+document.body.appendChild(client.errorElement);
+client.errorElement.style.color = "#fff";
+client.errorElement.style.position = "absolute";
+client.errorElement.style.top = "10%";
+client.errorElement.style.width = "10%";
+client.errorElement.style.fontSize = "100%";
+client.errorElement.style.left = "40%";
+client.errorElement.style.border = "solid red 1px";
+client.errorElement.style.borderRadius = "7px";
+client.errorElement.style.backgroundColor = "red";
+client.errorElement.innerHTML = "client.errorElement";
+client.errorElement.style.opacity = 0;
+client.errorElement.style.transition = "all 0.3s";
+client.errorElement.style.zIndex = "100";
+
+client.error = function (text) {
+  var audio = document.createElement("Audio");
+  audio.src = "files/assets/31197478/1/Error-UI.mp3";
+  audio.play();
+  client.errorElement.innerHTML = text;
+  client.errorElement.style.opacity = 1;
+  setTimeout(function(){client.errorElement.style.opacity = 0;}, 1000)
+};
+
+document.addEventListener("keydown", function(event) {
+    if (event.key == "z") {
+      client.menuToggled = !client.menuToggled;
+      !client.menuToggled && client.inGame && game.player.pointerLockControls.lock();
+    };
+    if (client.keyBinds[event.key]) {
+      try {
+        if(document.activeElement.tagName == "INPUT") return;
+      } catch (e) {}
+      if(/*!pc.controls || */!client.inGame) {client.error("You must be in a game to enable hacks!"); return};
+      for(let i = 0; i < client.Hacks.length; i++){
+        if(client.Hacks[i].name == client.keyBinds[event.key]){
+          if(client.Hacks[i].isEnabled){
+            client.Hacks[i].disable();
+            document.getElementById(client.Hacks[i].name).style.backgroundColor = "rgba(114, 154, 232, 1)";
+          } else {
+            client.Hacks[i].enable();
+            document.getElementById(client.Hacks[i].name).style.backgroundColor = "white";
+          };
+        };
+      };
+    };
+});
+
+client.MAIN = function() {
+    try {
+      client.inGame = !!game.chunks.length;
+    } catch (e) {
+      client.inGame && stophacks.enable();
+      client.inGame = false;
+    }
+    client.hackList.innerHTML = "VoHC version "+client.version+"<br>";
+    client.keyBindElement.innerHTML = "Keybinds:<br>z - open menu<br><br>";
+    for(let i = 0; i < client.Hacks.length; i++){
+      if(client.Hacks[i].isEnabled){
+        client.hackList.innerHTML += client.Hacks[i].name+"<br>";
+      };
+      if(client.Hacks[i].key == "no keybind") continue;
+      client.keyBindElement.innerHTML += client.Hacks[i].key+" - "+client.Hacks[i].name+"<br>";
+    };
+    if (client.menuToggled) {
+        document.exitPointerLock();
+        client.menuElement.style.display = "block";
+    } else {
+        client.menuElement.style.display = "none";
+    }
+    setTimeout(client.MAIN, 10);
+};
+client.dispose = function () {
+  console.log("disposing of client version "+client.version);
+  client.Hacks.forEach(hack => {
+    if(hack.isEnabled) {
+      hack.disable();
+    };
+  });
+  for (element in client) {
+    client[element].outerHTML = "";
+    delete client[element];
+  };
+  client = undefined;
+};
+client.init = function() {
+  console.log(client.version+" running on "+navigator.platform);
+  //hacks
+  var antiAFK = new client.Hack(function (this_) {
+     this_.old = game.allowMovementWhilePaused;
+     game.allowMovementWhilePaused = true;
+  }, function () {
+      game.player.triggerKeyDown("32");
+  }, function (this_) {
+     game.allowMovementWhilePaused = this_.old;
+      game.player.triggerKeyUp("32");
+  }, "antiAFK", "prevents the server from kicking you for AFK", "no keybind", 10);
+  var randomWalk = new client.Hack(function (this_) {
+     this_.old = game.allowMovementWhilePaused;
+     game.allowMovementWhilePaused = true;
+  }, function () {
+    game.player.triggerKeyUp(87);
+    game.player.triggerKeyUp(83);
+    game.player.triggerKeyUp(65);
+    game.player.triggerKeyUp(68);
+    var random = Math.random();
+    if(random > 0.75) {
+        game.player.triggerKeyDown(87);
+    } else if(random > 0.5) {
+        game.player.triggerKeyDown(83);
+    } else if(random > 0.25) {
+        game.player.triggerKeyDown(65);
+    } else {
+        game.player.triggerKeyDown(68);
+    }
+  }, function (this_) {
+    game.player.triggerKeyUp(87);
+    game.player.triggerKeyUp(83);
+    game.player.triggerKeyUp(65);
+    game.player.triggerKeyUp(68);
+    game.allowMovementWhilePaused = this_.old;
+  }, "RandomWalk", "Walk around randomly", "no keybind", 1500);
+  var autoSprint = new client.Hack(function (this_) {
+     this_.stop = false;
+     this_.handleClickDown = this_.handleClickDown || function(event) {
+         this_.stop = true;
+     }
+     this_.handleClickUp = this_.handleClickUp || function(event) {
+         this_.stop = false;
+     }
+     this_.handleKeyDown = this_.handleKeyDown || function(event) {
+         if(event.keyCode == 70) {
+           this_.stop = true;
+         }
+     }
+     this_.handleKeyUp = this_.handleKeyUp || function(event) {
+         if(event.keyCode == 70) {
+           this_.stop = false;
+         }
+     }
+     game.canvas.addEventListener("mousedown", this_.handleClickDown);
+     game.canvas.addEventListener("mouseup", this_.handleClickUp);
+     document.body.addEventListener("keydown", this_.handleKeyDown);
+     document.body.addEventListener("keyup", this_.handleKeyUp);
+     this_.event = game.addEventListener("respawn", this_.handleClickUp);
+  }, function () {
+    if(game.player && game.player.triggerKeyDown) {
+        if(this.stop || (game.player.inventoryStatus!=0 && !isNaN(game.player.inventoryStatus))) {
+            game.player.triggerKeyUp("16");
+        } else {
+            game.player.triggerKeyDown("16");
+        }
+    }
+  }, function (this_) {
+     this_.handleClickUp();
+     game.canvas.removeEventListener("mousedown", this_.handleClickDown);
+     game.canvas.removeEventListener("mousedown", this_.handleClickUp);
+     document.body.removeEventListener("keydown", this_.handleKeyDown);
+     document.body.removeEventListener("keyup", this_.handleKeyUp);
+     game.removeEventListener(this_.event);
+  }, "AutoSprint", "Sprint whenever possible", "no keybind", 1);
+  var safeWalk = new client.Hack(function () {
+    game.allowMovementWhilePaused=true;
+  }, function () {
+    var raycaster = new THREE.Raycaster();
+    raycaster.set(game.camera.position.clone(),new THREE.Vector3(0,-1,0));
+    var result = raycaster.intersectObjects(game.chunkMeshes);
+    if(result[0]) {
+        if(result[0].distance >= 3) {
+          game.player.triggerKeyDown("67");
+        } else {
+          game.player.triggerKeyUp("67");
+        }
+    }
+  }, function () {
+    game.allowMovementWhilePaused=false;
+  }, "SafeWalk", "prevent you from falling off any edge tall enough to hurt", "no keybind", 1);
+  var dolphin = new client.Hack(function () {
+
+  }, function () {
+      if(game.getBlock(Math.floor(game.player.position.x)*2,Math.floor(game.player.position.y)*2,Math.floor(game.player.position.z)*2) == 14 && !Object.values(Object.values(game.VOXIOM_GLOBAL_OBJECTS[0])[42])[6][67]) {
+          game.player.triggerKeyDown(32);
+          setTimeout("game.player.triggerKeyUp(32)", 10);
+      }
+  }, function () {
+
+  }, "dolphin", "swim up in water automatically", "no keybind");
+  var noRecoil = new client.Hack(function (this_) {
+     this_.old = game.clientSideRendering;
+     game.clientSideRendering = new Function;
+  }, function () {
+
+  }, function (this_) {
+     game.clientSideRendering = this_.old;
+  }, "noRecoil", "disable weapon recoil/shaking and ghost blocks", "no keybind");
+  var aimBot = new client.Hack(function (this_) {
+    this_.raycaster = this_.raycaster || new THREE.Raycaster();
+    this_.anchor = this_.anchor || new THREE.Object3D();
+    this_.TEAM = this_.TEAM == undefined ? false : this_.TEAM;
+    this_.hitbox = this_.hitbox || new THREE.Mesh(new THREE.BoxGeometry, new THREE.MeshBasicMaterial({map:new THREE.Texture}));
+    this_.hitbox.scale.set(0.25,0.25,0.25);
+    this_.hitbox.visible = false;
+    this_.hitboxes = this_.hitboxes || [];
+  }, function () {
+      if(this.TEAM === false && game.viewModelScene.children[4]) {
+          var src = game.viewModelScene.children[4].children[0].children[0].children[0].children[0].children[0].children[0].children[0].children[2].material.map.image.src;
+          this.TEAM = src=="https://voxiom.io/package/aef55bdd0c3c3c3734f8.png" ? 2 : src=="https://voxiom.io/package/ecca1227c2e0406be225.png" ? 1 : -1;
+      }
+      var closest = Infinity;
+      var closestPlayer = false;
+      for(var i = 0; i < game.players.length; i++) {
+          if(!game.players[i].headHitbox) {
+              var hb = this.hitbox.clone();
+              game.players[i].object.children[1].children[2].children[0].add(hb);
+              game.players[i].headHitbox = hb;
+              this.hitboxes.push(hb);
+          }
+          var dist = game.players[i].object.position.distanceTo(game.camera.position);
+          if(dist < closest && game.players[i].team != this.TEAM && game.players[i].object.parent != null && game.players[i].object.visible && !game.players[i].me) {
+              var direction = new THREE.Vector3();
+              this.raycaster.set(game.camera.position, direction.subVectors(game.players[i].headHitbox.localToWorld(new THREE.Vector3()), game.camera.position).normalize());
+              var a = this.raycaster.intersectObjects(this.hitboxes.concat(game.chunkMeshes));
+              if(a.length && a[0].object == game.players[i].headHitbox) {
+                  closest = dist;
+                  closestPlayer = game.players[i];
+              }
+          }
+      }
+      if(closest > 100) return;
+      if(closestPlayer) {
+          this.anchor.position.copy(game.camera.position);
+          this.anchor.lookAt(closestPlayer.headHitbox.localToWorld(new THREE.Vector3()));
+          this.anchor.rotation.reorder("YXZ");
+          game.player.rotation.y = Math.atan2(closestPlayer.object.position.x-game.camera.position.x, closestPlayer.object.position.z-game.camera.position.z)-Math.PI;
+          game.player.rotation.x = -this.anchor.rotation.x;
+          //game.player.triggerLeftMouseDown();
+          //setTimeout("game.player.triggerLeftMouseUp();", 10);//console.log(Object.values(Object.values(Object.values(game.player.inventory[1]))[0])[28])
+      }
+  }, function () {
+
+  }, "aimBot", "lock on to nearby enemies that aren't behind a wall", "q", 16.66);
+  var killAura = new client.Hack(function (this_) {
+      this_.old = game.allowMovementWhilePaused;
+      game.allowMovementWhilePaused = true;
+      this_.raycaster = new THREE.Raycaster();
+      this_.anchor = new THREE.Object3D();
+      this_.TEAM = this_.TEAM == undefined ? false : this_.TEAM;
+      this_.enabled = true;
+      this_.lastHit = 0;
+      this_.queuedHit = false;
+      this_.event = game.addEventListener("packetSent", function(event){
+          var view = new DataView(event.data);
+          try {
+              view.getFloat32(5); //yaw
+              view.getFloat32(9); //pitch
+              if(this_.queuedHit) {
+                  view.setFloat32(5, this_.queuedHit.y);
+                  view.setFloat32(9, this_.queuedHit.x);
+                  setTimeout(function(){this_.queuedHit=false},100);
+              }
+          } catch (e) {
+
+          }
+      });
+  }, function () {
+    if(this.TEAM === false && game.viewModelScene.children[4]) {
+      var src = game.viewModelScene.children[4].children[0].children[0].children[0].children[0].children[0].children[0].children[0].children[2].material.map.image.src;
+      this.TEAM = src=="https://voxiom.io/package/aef55bdd0c3c3c3734f8.png" ? 2 : src=="https://voxiom.io/package/ecca1227c2e0406be225.png" ? 1 : -1;
+    }
+    var closest = Infinity;
+    var closestPlayer = false;
+    for(var i = 0; i < game.players.length; i++) {
+        var dist = game.players[i].object.position.distanceTo(game.camera.position);
+        if(dist < closest && game.players[i].team != this.TEAM && game.players[i].object.parent != null && game.players[i].object.visible) {
+          closest = dist;
+          closestPlayer = game.players[i];
+        }
+    }
+    var this_ = this;
+    if(closest > 3.25) {
+        if(this.lastSlot) {
+            console.log("switch back to slot: "+(this.lastSlot+1));
+            setTimeout(function(){
+                game.player.triggerKeyUp(49);
+                game.player.triggerKeyUp(50);
+                game.player.triggerKeyUp(51);
+                game.player.triggerKeyUp(52);
+                game.player.triggerKeyUp(53);
+                game.player.triggerKeyDown(49+this_.lastSlot);
+            }, 10);
+            setTimeout(function(){
+                game.player.triggerKeyUp(49+this_.lastSlot);
+                this_.lastSlot=false;
+            }, 100);
+        }
+        return;
+    }
+    if(closest > 3) return;
+
+    //get prev slot
+    try {
+        for(var a = 0; a < document.getElementsByClassName("sc-gdWVyK sxEef").length; a++) {
+          if(document.getElementsByClassName("sc-gdWVyK sxEef")[a].children[0].className.includes("hIaLVk") && !this.lastSlot && a != this.shovelSlot){
+              this.lastSlot = a;
+          }
+      }
+    } catch (e) {
+      console.log(e);
+    }
+
+    //get shovel slot
+    game.player.inventory.forEach(function(inv,index){
+        var itemName = Object.values(Object.values(game.player.inventory[index])[0])[2];
+        if(itemName == "Shovel") {
+            game.player.triggerKeyDown(49+index);
+            setTimeout(function(){
+                game.player.triggerKeyUp(49+index);
+            }, 10);
+        }
+    });
+
+    if(closest > 2.25) return;
+    if(closestPlayer && Date.now() - this.lastHit >= 250) {
+        this.lastHit = Date.now();
+        this.anchor.position.copy(game.camera.position);
+        this.anchor.lookAt(closestPlayer.object.position.clone().add(new THREE.Vector3(0, 1.1, 0)));
+        this.anchor.rotation.reorder("YXZ");
+        //game.player.rotation.y = Math.atan2(closestPlayer.object.position.x-game.camera.position.x, closestPlayer.object.position.z-game.camera.position.z)-Math.PI;
+        //game.player.rotation.x = -anchor.rotation.x;
+        this.queuedHit={y:Math.atan2(closestPlayer.object.position.x-game.camera.position.x, closestPlayer.object.position.z-game.camera.position.z)-Math.PI,x:-this.anchor.rotation.x}
+        game.player.triggerLeftMouseDown();
+        setTimeout("game.player.triggerLeftMouseUp();", 10);//console.log(Object.values(Object.values(Object.values(game.player.inventory[1]))[0])[28])
+    }
+  }, function () {
+    game.removeEventListener(this_.event);
+    game.allowMovementWhilePaused = this_.old;
+  }, "killAura", "hit nearby enemies with your shovel!", "no keybind", 1);
+  var triggerBot = new client.Hack(function (this_) {
+    this_.geometry = new THREE.BufferGeometry();
+    this_.geometry.setFromPoints([new THREE.Vector3(0, 0, 0),new THREE.Vector3(0, 0, 1)]);
+    this_.material = new THREE.LineBasicMaterial({
+        depthTest: false,
+        depthWrite: false,
+        fog: false,
+    });
+    this_.hitboxes = [];
+  }, function () {
+    var this_ = this;
+    game.players.forEach(function (player) {
+        if(player.hitbox_triggerBot) return;
+        var hitbox = new THREE.Mesh(new THREE.BoxGeometry);
+        hitbox.scale.set(0.4,1.25,0.4);
+        hitbox.renderOrder = 9999;
+        hitbox.material.depthTest = false;
+        hitbox.material.transparent = true;
+        hitbox.material.opacity = 0.5;
+        hitbox.position.y += 0.65;
+        player.hitbox_triggerBot = hitbox;
+        this_.hitboxes.push(hitbox);
+        player.object.add(hitbox);
+        hitbox.visible = false;
+    });
+    this.raycaster = this.raycaster || new THREE.Raycaster();
+    this.raycaster.set(game.camera.position, game.camera.getWorldDirection());
+    var result = this.raycaster.intersectObjects(game.chunkMeshes.concat(this.hitboxes));
+    if(result[0] && this.hitboxes.indexOf(result[0].object) != -1) {
+      game.player.triggerLeftMouseDown();
+      setTimeout(function(){game.player.triggerLeftMouseUp()},10);
+    }
+  }, function (this_) {
+     game.players.forEach(function (player) {
+       player.hitbox_triggerBot && player.hitbox_triggerBot.removeFromParent();
+       delete player.hitbox_triggerBot;
+     });
+  }, "triggerBot", "shoot if player on your cursor", ".");
+  var playerESP = new client.Hack(function (this_) {
+    this_.geometry = new THREE.BufferGeometry();
+    this_.geometry.setFromPoints([new THREE.Vector3(0, 0, 0),new THREE.Vector3(0, 0, 1)]);
+    this_.material = new THREE.LineBasicMaterial({
+        depthTest: false,
+        depthWrite: false,
+        fog: false,
+    });
+    this_.hitboxes = [];
+    this_.tracers = [];
+  }, function () {
+      var this_ = this;
+      var position = (game.mainCamera || game.camera).position.clone().add(new THREE.Vector3(0, 0, -10).applyQuaternion((game.mainCamera || game.camera).quaternion));
+      game.players.forEach(function (player) {
+          if(!player.object.parent || !player.object.visible) {
+            player.tracer && player.tracer.removeFromParent();
+          } else {
+            player.tracer && game.scene.children.indexOf(player.tracer) == -1 && game.scene.add(player.tracer);
+          }
+          if(player.tracer) {
+              player.tracer.position.set(position.x, position.y, position.z);
+              player.tracer.lookAt(player.object.position);
+              player.tracer.scale.z = player.tracer.position.distanceTo(player.object.position);
+              return;
+          }
+          var tracer = new THREE.Line(this_.geometry, this_.material.clone());
+          setTimeout(function(){
+              tracer.material.color.set((player.team == 2 || player.team == 0) && "red" || "deepskyblue");
+          }, 10);
+          tracer.renderOrder = 9999;
+          player.tracer = tracer;
+          game.scene.add(tracer);
+          tracer.obj = player.object;
+          this_.tracers.push(tracer);
+          if(player.hitbox) return;
+          var hitbox = new THREE.Mesh(new THREE.BoxGeometry);
+          hitbox.scale.set(0.4,1.25,0.4);
+          hitbox.renderOrder = 9999;
+          hitbox.material.depthTest = false;
+          hitbox.material.transparent = true;
+          hitbox.material.opacity = 0.5;
+          setTimeout(function(){
+              hitbox.material.color.set((player.team == 2 || player.team == 0) && "red" || "deepskyblue");
+              if(player.me) {
+                 player.hitbox.material.color.set("lime");
+                 player.tracer.material.color.set("lime");
+              }
+          }, 10);
+          hitbox.material.fog = false;
+          hitbox.position.y += 0.65;
+          player.hitbox = hitbox;
+          this_.hitboxes.push(hitbox);
+          player.object.add(hitbox);
+      });
+  }, function (this_) {
+     game.players.forEach(function (player) {
+       player.hitbox && player.hitbox.removeFromParent();
+       player.tracer && player.tracer.removeFromParent();
+       delete player.hitbox;
+       delete player.tracer;
+     });
+     this_.tracers = [];
+  }, "PlayerESP", "Show all players with tracers", ";", 1);
+  var entityESP = new client.Hack(function (this_) {
+    this_.hitboxes = [];
+    this_.sprayHitbox = new THREE.Mesh(new THREE.BoxGeometry)
+    this_.sprayHitbox.scale.set(0.5, 2, 0.01);
+    this_.sprayHitbox.renderOrder = 9999;
+    this_.sprayHitbox.material.depthTest = false;
+    this_.sprayHitbox.material.transparent = true;
+    this_.sprayHitbox.material.opacity = 0.5;
+    this_.sprayHitbox.material.fog = false;
+    this_.itemHitbox = new THREE.Mesh(new THREE.BoxGeometry)
+    this_.itemHitbox.scale.set(0.125, 0.125, 0.125);
+    this_.itemHitbox.renderOrder = 9999;
+    this_.itemHitbox.material.depthTest = false;
+    this_.itemHitbox.material.transparent = true;
+    this_.itemHitbox.material.opacity = 0.5;
+    this_.itemHitbox.material.fog = false;
+    this_.itemHitbox.material.color.set("blue");
+    this_.bombHitbox = new THREE.Mesh(new THREE.BoxGeometry)
+    this_.bombHitbox.scale.set(0.5, 0.5, 0.5);
+    this_.bombHitbox.renderOrder = 9999;
+    this_.bombHitbox.material.depthTest = false;
+    this_.bombHitbox.material.transparent = true;
+    this_.bombHitbox.material.opacity = 0.5;
+    this_.bombHitbox.material.fog = false;
+    this_.bombHitbox.material.color.set("red");
+  }, function () {
+    var this_ = this;
+    Object.values(game.entities).forEach(function (entity) {
+      if(!entity.entityHitbox) {
+         switch (entity.GT) {
+             case 1:
+                 var hb = this_.itemHitbox.clone();
+                 entity.entityHitbox = hb;
+                 entity.object.add(hb);
+                 break
+             case 2:
+                 var hb = this_.sprayHitbox.clone();
+                 entity.entityHitbox = hb;
+                 entity.object.children[0].add(hb);
+                 break
+             case 3:
+                 var hb = this_.bombHitbox.clone();
+                 entity.entityHitbox = hb;
+                 entity.object.add(hb);
+                 break
+         }
+      }
+    });
+  }, function () {
+    Object.values(game.entities).forEach(function (entity) {
+      entity.entityHitbox && entity.entityHitbox.removeFromParent();
+      delete entity.entityHitbox;
+    });
+  }, "EntityESP", "Show all entities (non player)", "l");
+  var nametagESP = new client.Hack(function () {
+
+  }, function () {
+    game.players.forEach(function (player) {
+      if(player.object.children[2] && player.object.children[2].isSprite && !player.object.children[2].processed) {
+          player.object.children[2].material.depthTest = false;
+          player.object.children[2].material.sizeAttenuation = false;
+          player.object.children[2].material.needsUpdate = true;
+          player.object.children[2].scale.x/=4;
+          player.object.children[2].scale.y/=4;
+          player.object.children[2].processed = true;
+      }
+    });
+  }, function () {
+    game.players.forEach(function (player) {
+      if(player.object.children[2] && player.object.children[2].isSprite && player.object.children[2].processed) {
+          player.object.children[2].material.depthTest = true;
+          player.object.children[2].material.sizeAttenuation = true;
+          player.object.children[2].material.needsUpdate = true;
+          player.object.children[2].scale.x*=4;
+          player.object.children[2].scale.y*=4;
+          delete player.object.children[2].processed;
+      }
+    });
+  }, "NametagESP", "Make all nametags visible from afar", "no keybind", 1000);
+  var chestESP = new client.Hack(function (this_) {
+    this_.currentChunkPos = {x:0,y:0,z:0};
+    this_.lastChunk = false;
+    this_.currentChunk = false;
+  }, function () {
+    this.currentChunkPos.x = Math.floor(game.player.position.x/16);
+    this.currentChunkPos.y = Math.floor(game.player.position.y/16);
+    this.currentChunkPos.z = Math.floor(game.player.position.z/16);
+    this.currentChunk = game.chunkGrid[this.currentChunkPos.x][this.currentChunkPos.y][this.currentChunkPos.z];
+    if(this.currentChunk != this.lastChunk) {
+      console.log("new terrain loaded");
+      if(window.group) window.group.removeFromParent();
+      window.group = new THREE.Object3D();
+      game.scene.add(group);
+      this.currentChunk.OriginalVoxiomObject.Yh.gx.forEach(function(e){
+            var chunk = game.chunkGrid[e._h.x][e._h.y][e._h.z];
+            chunk.blocks.forEach(function(block, index) {
+                if(block == 25) {
+                    //golden chest
+                    var pos = chunk.getBlockPositionAtIndex(index);
+                    var mesh = new THREE.Mesh(new THREE.BoxGeometry);
+                    group.add(mesh);
+                    mesh.position.copy(new THREE.Vector3().copy(pos).multiplyScalar(0.5));
+                    mesh.material.depthTest = false;
+                    mesh.material.fog = false;
+                    mesh.scale.setScalar(0.5);
+                    mesh.position.addScalar(0.25);
+                    mesh.material.color.set("yellow");
+                }
+                if(block == 24) {
+                    //iron chest
+                    var pos = chunk.getBlockPositionAtIndex(index);
+                    var mesh = new THREE.Mesh(new THREE.BoxGeometry);
+                    group.add(mesh);
+                    mesh.position.copy(new THREE.Vector3().copy(pos).multiplyScalar(0.5));
+                    mesh.material.depthTest = false;
+                    mesh.material.fog = false;
+                    mesh.scale.setScalar(0.5);
+                    mesh.position.addScalar(0.25);
+                }
+                if(block == 23) {
+                    //wooden chest
+                    var pos = chunk.getBlockPositionAtIndex(index);
+                    var mesh = new THREE.Mesh(new THREE.BoxGeometry);
+                    group.add(mesh);
+                    mesh.position.copy(new THREE.Vector3().copy(pos).multiplyScalar(0.5));
+                    mesh.material.depthTest = false;
+                    mesh.material.fog = false;
+                    mesh.scale.setScalar(0.5);
+                    mesh.position.addScalar(0.25);
+                    mesh.material.color.set("chocolate");
+                }
+                if(block == 15) {
+                    //wooden crate
+                    var pos = chunk.getBlockPositionAtIndex(index);
+                    var mesh = new THREE.Mesh(new THREE.BoxGeometry);
+                    group.add(mesh);
+                    mesh.position.copy(new THREE.Vector3().copy(pos).multiplyScalar(0.5));
+                    mesh.material.depthTest = false;
+                    mesh.material.fog = false;
+                    mesh.scale.setScalar(0.5);
+                    mesh.position.addScalar(0.25);
+                    mesh.material.color.set("saddlebrown");
+                }
+            });
+        });
+    }
+    this.lastChunk = this.currentChunk;
+  }, function () {
+      window.group.removeFromParent();
+      delete window.group;
+  }, "chestESP", "show all types of chests nearby", "no keybind");
+   var oreXray = new client.Hack(function (this_) {
+    this_.currentChunkPos = {x:0,y:0,z:0};
+    this_.lastChunk = false;
+    this_.currentChunk = false;
+    this_.wireframeTexture = this_.wireframeTexture || new THREE.MeshBasicMaterial({ color: "", transparent: true, opacity: 0.5, wireframe: true });
+  }, function () {
+    this.currentChunkPos.x = Math.floor(game.player.position.x/16);
+    this.currentChunkPos.y = Math.floor(game.player.position.y/16);
+    this.currentChunkPos.z = Math.floor(game.player.position.z/16);
+    this.currentChunk = game.chunkGrid[this.currentChunkPos.x][this.currentChunkPos.y][this.currentChunkPos.z];
+    if(this.currentChunk != this.lastChunk) {
+      console.log("new terrain loaded");
+      if(window.group2) window.group2.removeFromParent();
+      window.group2 = new THREE.Object3D();
+      game.scene.add(group2);
+      var chunk = this.currentChunk;
+      var mat = this.wireframeTexture;
+        chunk.blocks.forEach(function(block, index) {
+            if(block == 17) {
+                //emerald ore
+                var pos = chunk.getBlockPositionAtIndex(index);
+                var mesh = new THREE.Mesh(new THREE.BoxGeometry, mat);
+                group2.add(mesh);
+                mesh.position.copy(new THREE.Vector3().copy(pos).multiplyScalar(0.5));
+                mesh.material.depthTest = false;
+                mesh.material.fog = false;
+                mesh.scale.setScalar(0.5);
+                mesh.position.addScalar(0.25);
+                mesh.material.color.set("limegreen");
+            }
+            if(block == 18) {
+                //ruby ore
+                var pos = chunk.getBlockPositionAtIndex(index);
+                var mesh = new THREE.Mesh(new THREE.BoxGeometry, mat.clone());
+                group2.add(mesh);
+                mesh.position.copy(new THREE.Vector3().copy(pos).multiplyScalar(0.5));
+                mesh.material.depthTest = false;
+                mesh.material.fog = false;
+                mesh.scale.setScalar(0.5);
+                mesh.position.addScalar(0.25);
+                mesh.material.color.set("red");
+            }
+            if(block == 19) {
+                //sapphire ore
+                var pos = chunk.getBlockPositionAtIndex(index);
+                var mesh = new THREE.Mesh(new THREE.BoxGeometry, mat.clone());
+                group2.add(mesh);
+                mesh.position.copy(new THREE.Vector3().copy(pos).multiplyScalar(0.5));
+                mesh.material.depthTest = false;
+                mesh.material.fog = false;
+                mesh.scale.setScalar(0.5);
+                mesh.position.addScalar(0.25);
+                mesh.material.color.set("blue");
+            }
+            if(block == 20) {
+                //iron ore
+                var pos = chunk.getBlockPositionAtIndex(index);
+                var mesh = new THREE.Mesh(new THREE.BoxGeometry, mat.clone());
+                group2.add(mesh);
+                mesh.position.copy(new THREE.Vector3().copy(pos).multiplyScalar(0.5));
+                mesh.material.depthTest = false;
+                mesh.material.fog = false;
+                mesh.scale.setScalar(0.5);
+                mesh.position.addScalar(0.25);
+                mesh.material.color.set("white");
+            }
+            if(block == 42) {
+                //sulphur ore
+                var pos = chunk.getBlockPositionAtIndex(index);
+                var mesh = new THREE.Mesh(new THREE.BoxGeometry, mat.clone());
+                group2.add(mesh);
+                mesh.position.copy(new THREE.Vector3().copy(pos).multiplyScalar(0.5));
+                mesh.material.depthTest = false;
+                mesh.material.fog = false;
+                mesh.scale.setScalar(0.5);
+                mesh.position.addScalar(0.25);
+                mesh.material.color.set("brown");
+            }
+        });
+    }
+    this.lastChunk = this.currentChunk;
+  }, function () {
+      window.group2.removeFromParent();
+      delete window.group2;
+  }, "oreXray", "show all ores nearby", "h");
+  var freeCam = new client.Hack(function (this_) {
+    this_.delta = 1;
+    this_.last = Date.now();
+    this_.firstTime = this_.firstTime == undefined;
+    this_.a = this_.a || game.renderer.render;
+    this_.camera = this_.camera || new THREE.PerspectiveCamera(60, game.camera.aspect, 0.1, 1000);
+    this_.controls = this_.controls || new THREE.PointerLockControls(this_.camera,game.canvas);
+    this_.controls.lock();
+    this_.freefly = this_.freefly || new THREE.FirstPersonControls(this_.camera,game.canvas);
+    this_.event = game.addEventListener("render",function(){this_.delta=(Date.now()-this_.last)/1000;this_.last=Date.now();this_.freefly.update(this_.delta*8);this_.camera.aspect=game.camera.aspect;});
+    this_.camera.position.copy(game.camera.position);
+    this_.camera.rotation.copy(game.camera.rotation);
+    game.renderer.render = function(c,b){
+       this_.a.call(game.renderer, c, b == game.camera ? this_.camera : b);
+    }
+    var random = this_.random = -Math.floor(Math.random()*1000);
+    game.spawnEntity(random,0);
+    game.entities[random].me = true;
+    game.players.push(game.entities[random]);
+    game.mainCamera = this_.camera;
+  }, function () {
+     this.camera && this.camera.updateProjectionMatrix();
+     game.player.triggerKeyUp(87);
+     game.player.triggerKeyUp(83);
+     game.player.triggerKeyUp(65);
+     game.player.triggerKeyUp(68);
+     game.entities[this.random].object.position.copy(game.player.position);
+     game.entities[this.random].object.rotation.set(0,game.player.rotation.y,0);
+     game.entities[this.random].object.children[1].children[2].children[0].rotation.set(-game.player.rotation.x,0,0);
+  }, function (this_) {
+     game.renderer.render = this_.a;
+     game.removeEventListener(this_.event);
+     game.VOXIOM_GLOBAL_OBJECTS[10].tk.call(game.VOXIOM_GLOBAL_OBJECTS[10],[this_.random]);
+     game.mainCamera = game.camera;
+  }, "freeCam", "Fly your camera around like a ghost!", "v", 1);
+  var baseFinder = new client.Hack(function () {
+    game.chunkMeshes.forEach(function(e){e.material.side=THREE.BackSide});
+  }, function () {
+
+  }, function () {
+    game.chunkMeshes.forEach(function(e){e.material.side=THREE.FrontSide});
+  }, "BaseFinder", "reveal all hidden tunnels and bases", "k");
+  var autoGG = new client.Hack(function (this_) {
+    this_.event = game.addEventListener("emit", function(event){
+        if(event.data[0]==38) {
+            console.log(event.data);
+            if(event.data[2].includes("Win")) {
+                game.ws.send(new Int8Array([09,02,00,00,00,71,00,00,00,71]).buffer);
+            }
+            if(event.data[2].includes("Won")) {
+                game.ws.send(new Int8Array([09,07,00,00,00,47,00,00,00,97,00,00,00,108,00,00,00,108,00,00,00,32,00,00,00,71,00,00,00,71]).buffer);
+            }
+        }
+    });
+  }, function () {
+
+  }, function (this_) {
+      game.removeEventListener(this_.event);
+  }, "AutoGG", "Say GG after a game ends (CTG + FFA only)", "no keybind");
+  var MileyCyrus = new client.Hack(function (this_) {
+    this_.timeSinceLastCrouch = 0;
+    this_.switch = 0;
+  }, function () {
+      if(Date.now() - this.timeSinceLastCrouch >= 20 && game.player && game.player.triggerKeyDown) {
+        this.timeSinceLastCrouch = Date.now();
+        switch(this.switch) {
+            case 0:
+                this.switch = 1;
+                game.player.triggerKeyDown("67");
+                break;
+            case 1:
+                this.switch = 0;
+                game.player.triggerKeyUp("67");
+                break;
+        }
+      }
+  }, function () {
+      game.player.triggerKeyUp("67");
+  }, "MileyCyrus", "Makes you crouch very fast!", "no keybind");
+  var chatSpam = new client.Hack(function (this_) {
+      this_.offset = 0;
+      this_.chillCounter = 0;
+      this_.chilling = false;
+      this_.lastMessage = 0;
+  }, function () {
+    if(this.chilling ? Date.now() - this.lastMessage >= 5000 : true) {
+      this.chilling = false;
+      this.lastMessage = Date.now();
+      var data = [9, this.offset+12, 0, 0, 0, 65, 0, 0, 0, 77, 0, 0, 0, 79, 0, 0, 0, 78, 0, 0, 0, 71, 0, 0, 0, 32, 0, 0, 0, 85, 0, 0, 0, 83, 0, 0, 0, 32, 0, 0, 0, 83, 0, 0, 0, 85, 0, 0, 0, 83];
+      for(var i = 0; i < this.offset; i++) {
+          data.push(0);
+          data.push(0);
+          data.push(0);
+          data.push(32);
+      }
+      game.ws.send(new Int8Array(data).buffer);
+      this.offset++;
+    }
+    if(this.chillCounter < 4 && !this.chilling) {
+        this.chillCounter++;
+    } else {
+       this.chilling = false;
+       this.chillCounter = 0;
+    }
+  }, function () {
+
+  }, "chatSpam", "Spam chat with AMONG US SUS", "no keybind", 5000);
+  window.stophacks = new client.Hack(function () {
+    client.Hacks.forEach(function (hack) {
+      if(!hack.isEnabled) return
+      hack.disable();
+      document.getElementById(hack.name).style.backgroundColor = "rgba(114, 154, 232, 1)";
+    });
+  }, function () {
+      stophacks.disable();
+      document.getElementById(stophacks.name).style.backgroundColor = "rgba(114, 154, 232, 1)";
+  }, function () {
+
+  }, "Disable all hacks", "Disable all hacks", "y");
+  //menu elements
+  new client.MenuElement([antiAFK, randomWalk, autoSprint, safeWalk, dolphin], "Movement", "0%", "0%");
+  new client.MenuElement([noRecoil, aimBot, killAura, triggerBot], "Combat", "25%", "0%");
+  new client.MenuElement([playerESP, entityESP, nametagESP, chestESP, oreXray, freeCam, baseFinder], "Render", "50%", "0%");
+  new client.MenuElement([autoGG, MileyCyrus, chatSpam, stophacks], "Game", "75%", "0%");
+  //win message
+  //pc.app.on("Game:Finish", function(){pc.app.fire("Network:Chat", "GG ez no hax"); client.inGame = false; stophacks.enable();});
+  //pc.app.on("Game:Start", function(){client.inGame = true})
+  //prerequisites
+  addEventListener("load", function () {
+    game.addEventListener("gameLoad", function () {
+      setTimeout(function () {
+        modLoader.require("https://www.akncreations.com/pixelarena-1.0.0_beta1_01/PIXELARENA-1.0.0_beta1_01/js/pointerlockcontrols.js");
+        modLoader.require("https://www.akncreations.com/pixelarena-1.0.0_beta1_01/PIXELARENA-1.0.0_beta1_01/js/firstpersoncontrols.js");
+      }, 120);
+    });
+  });
+  client.MAIN();
+};
+client.init();</h1>
